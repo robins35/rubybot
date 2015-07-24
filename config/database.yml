@@ -1,2 +1,13 @@
-adapter: postgresql
-database: rubybot
+development:
+  adapter: postgresql
+  database: rubybot
+  username: caiden
+  password: caiden
+  host: localhost
+
+drop_environment:
+  adapter: postgresql
+  database: template1
+  username: caiden
+  password: caiden
+  host: localhost

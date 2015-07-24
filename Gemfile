@@ -4,4 +4,6 @@ gem 'activerecord'
 
 gem 'rake'
 
+gem 'pg'
+
 gem 'pry'

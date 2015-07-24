@@ -12,4 +12,4 @@ app = Rake.application
 app.init
 app.add_import 'lib/tasks/db.rake'
 app.load_rakefile
-app['db:connect'].invoke
+app['db:configure_connection'].invoke
