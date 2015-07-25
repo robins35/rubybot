@@ -2,7 +2,8 @@
 
 require_relative 'environment'
 require 'socket'
-require 'pry'
+
+binding.pry
 
 class Bot
   def initialize(server, port, channel)
@@ -54,8 +55,8 @@ class Bot
   end
 end
 
-bot = Bot.new("irc.freenode.net", 6667, 'ppdloc')
+#bot = Bot.new("irc.freenode.net", 6667, 'ppdloc')
 
-trap("INT"){ bot.quit }
+#trap("INT"){ bot.quit }
 
 #bot.run

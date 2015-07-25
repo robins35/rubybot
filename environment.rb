@@ -1,3 +1,5 @@
+require 'active_record'
+require 'awesome_print'
 require 'pry'
 require 'yaml'
 require 'rake'

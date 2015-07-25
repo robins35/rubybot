@@ -1,12 +1,13 @@
 require 'yaml'
 require 'logger'
 require 'active_record'
+require 'active_support/core_ext'
 require 'pg'
 require 'pry'
 
 namespace :db do
   def create_database config
-    options = {:charset => 'utf8', :collation => 'utf8_unicode_ci'}
+    options = {:charset => 'utf8'}
 
     create_db = lambda do |config|
       ActiveRecord::Base.establish_connection config.merge(:database => "template1")
@@ -17,12 +18,13 @@ namespace :db do
     begin
       create_db.call config
     rescue Exception => e
+      puts e
     end
   end
 
   task :environment do
-    DATABASE_ENV = ENV['DATABASE_ENV'] || 'development'
-    MIGRATIONS_DIR = ENV['MIGRATIONS_DIR'] || '../../db/migrate'
+    DATABASE_ENV ||= ENV['DATABASE_ENV'] || 'development'
+    MIGRATIONS_DIR ||= ENV['MIGRATIONS_DIR'] || 'db/migrate'
   end
 
   task :configuration => :environment do
@@ -49,7 +51,11 @@ namespace :db do
   desc 'Migrate the database (options: VERSION=x, VERBOSE=false).'
   task :migrate => :configure_connection do
     ActiveRecord::Migration.verbose = true
-    ActiveRecord::Migrator.migrate MIGRATIONS_DIR, ENV['VERSION'] ? ENV['VERSION'].to_i : nil
+    begin
+      ActiveRecord::Migrator.migrate MIGRATIONS_DIR, ENV['VERSION'] ? ENV['VERSION'].to_i : nil
+    rescue Exception => e
+      puts e
+    end
   end
 
   desc 'Rolls the schema back to the previous version (specify steps w/ STEP=n).'
