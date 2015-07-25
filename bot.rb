@@ -33,19 +33,29 @@ class Bot
         next
       end
 
-      if msg.match(/PRIVMSG ##{@channel} :(.*)$/)
-        binding.pry
-        content = $~[1].strip
+      if msg.match(/^:(\w*)!.*PRIVMSG ##{@channel} :(.*)$/)
+        user_name = $~[1].downcase
+        content = $~[2].strip
 
-        if m = content.match(/^!(\w*) (.*)/)
-          case m[1]
+        if (user = User.where(name: user_name)).nil?
+          user = User.create(name: user_name) if user.nil?
+        end
+
+
+        if command_match = content.match(/^!(\w*) (.*)/)
+          case command_match[1]
           when "seen"
-            say_to_chan "I saw that guy #{m[2]} like 5 minute ago"
+            message = user.messages.last
+            if message.blank?
+              say_to_chan "I have never seen #{user_name}"
+            else
+              say_to_chan
+            end
           else
-            say_to_chan "#{m[1]} hasn't been implemented yet"
+            say_to_chan "#{command_match[1]} hasn't been implemented yet"
           end
         else
-          binding.pry
+          Message.create(user: user, text: content)
         end
       end
     end
