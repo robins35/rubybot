@@ -1,6 +1,9 @@
 require 'active_record'
 
 class User < ActiveRecord::Base
-  attr_accessible :name
+  has_many :messages
 
+  def messages
+    Message.where(user_id: id)
+  end
 end

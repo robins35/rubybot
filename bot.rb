@@ -3,7 +3,6 @@
 require_relative 'environment'
 require 'socket'
 
-binding.pry
 
 class Bot
   def initialize(server, port, channel)
@@ -35,6 +34,7 @@ class Bot
       end
 
       if msg.match(/PRIVMSG ##{@channel} :(.*)$/)
+        binding.pry
         content = $~[1].strip
 
         if m = content.match(/^!(\w*) (.*)/)
@@ -44,6 +44,8 @@ class Bot
           else
             say_to_chan "#{m[1]} hasn't been implemented yet"
           end
+        else
+          binding.pry
         end
       end
     end
@@ -55,8 +57,8 @@ class Bot
   end
 end
 
-#bot = Bot.new("irc.freenode.net", 6667, 'ppdloc')
+bot = Bot.new("irc.freenode.net", 6667, 'ppdloc')
 
-#trap("INT"){ bot.quit }
+trap("INT"){ bot.quit }
 
-#bot.run
+bot.run
