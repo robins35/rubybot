@@ -1,10 +1,11 @@
 #!/usr/bin/env ruby
 
 require_relative 'environment'
-require 'socket'
 
 
 class Bot
+  include ActionView::Helpers::DateHelper
+
   def initialize(server, port, channel)
     @channel = channel
     @socket = TCPSocket.open(server, port)
@@ -34,28 +35,32 @@ class Bot
       end
 
       if msg.match(/^:(\w*)!.*PRIVMSG ##{@channel} :(.*)$/)
-        user_name = $~[1].downcase
+        author_name = $~[1].downcase
         content = $~[2].strip
 
-        if (user = User.where(name: user_name)).nil?
-          user = User.create(name: user_name) if user.nil?
+        if (author = User.where(name: author_name).first).blank?
+          author = User.create(name: author_name)
         end
 
-
         if command_match = content.match(/^!(\w*) (.*)/)
+          args = command_match[2]
           case command_match[1]
           when "seen"
+            user_name = args.split.first
+            if (user = User.where(name: user_name).first).blank?
+              user = User.create(name: user_name)
+            end
             message = user.messages.last
             if message.blank?
               say_to_chan "I have never seen #{user_name}"
             else
-              say_to_chan
+              say_to_chan "I last saw #{user.name} #{time_ago_in_words message.created_at} saying #{message.text}"
             end
           else
             say_to_chan "#{command_match[1]} hasn't been implemented yet"
           end
         else
-          Message.create(user: user, text: content)
+          Message.create(user: author, text: content)
         end
       end
     end

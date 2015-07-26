@@ -4,6 +4,7 @@ ruby '2.2.2'
 
 gem 'activerecord'
 gem 'activesupport'
+gem 'actionview'
 
 gem 'awesome_print'
 

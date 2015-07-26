@@ -1,9 +1,13 @@
 require 'active_record'
 require 'active_support'
+require 'active_support/all'
+require 'action_view'
+require 'action_view/helpers'
 require 'awesome_print'
 require 'pry'
 require 'yaml'
 require 'rake'
+require 'socket'
 
 app = Rake.application
 app.init
