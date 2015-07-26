@@ -14,11 +14,15 @@ module MessageManager
         author = User.create(name: author_name)
       end
 
+      check_pending_messages author.id
+
       if command_match = content.match(/^!(\w*) ?(.*)/)
         args = command_match[2]
         case command_match[1]
         when "seen"
           execute_command :seen, args
+        when "tell"
+          execute_command :tell, "#{author.id} #{args}"
         when "goaway"
           quit
         else
@@ -28,9 +32,13 @@ module MessageManager
       Message.create(user: author, text: content, message_type: 'message')
     elsif activity_match = msg.match(/^:(\w*)!.*(JOIN|QUIT|PART) [##{@channel}|:Client Quit]/)
       author_name = $~[1].downcase
+      action = $~[2]
       if (author = User.where(name: author_name).first).blank?
         author = User.create(name: author_name)
       end
+
+      check_pending_messages author.id if action == 'JOIN'
+
       activity = $~[2].downcase
       message = Message.new(user: author, text: content, message_type: activity)
       if !message.save
