@@ -15,7 +15,8 @@ app.add_import 'lib/tasks/db.rake'
 app.load_rakefile
 app['db:configure_connection'].invoke
 
-Dir.glob('./lib/*').each do |folder|
+#Dir.glob('./lib/*').each do |folder|
+['./lib/models', './lib/tasks'].each do |folder|
   Dir.glob(folder +"/*.rb").each do |file|
     require file
   end
