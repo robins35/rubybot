@@ -7,6 +7,7 @@ gem 'activesupport'
 gem 'actionview'
 
 gem 'awesome_print'
+gem 'nokogiri'
 
 gem 'rake'
 
@@ -15,3 +16,5 @@ gem 'pg'
 gem 'pry'
 gem 'pry-byebug'
 gem 'pry-rescue'
+
+gem 'xkcd'

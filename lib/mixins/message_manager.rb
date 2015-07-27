@@ -16,15 +16,29 @@ module MessageManager
 
       check_pending_messages author.id
 
-      if command_match = content.match(/^!(\w*) ?(.*)/)
+      if command_match = content.match(/^!(\w*)[\ |\/]?(.*)/)
         args = command_match[2]
         case command_match[1]
+        when "booty"
+          execute_command :booty, args
+        when "pussy"
+          execute_command :pussy, args
+        when "bpt"
+          execute_command :black_people_twitter, args
+        when "s"
+          execute_command :sed, "#{author.id}/#{args}"
         when "seen"
           execute_command :seen, args
         when "tell"
           execute_command :tell, "#{author.id} #{args}"
         when "goaway"
           quit
+        when "xkcd"
+          if args.blank?
+            execute_command :xkcd, args
+          else
+            execute_command :xkcd_search, args
+          end
         else
           say_to_chan "#{command_match[1]} hasn't been implemented yet"
         end
