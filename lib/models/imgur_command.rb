@@ -6,6 +6,7 @@ class ImgurCommand < ActiveRecord::Base
   def get_random_from_subimgur
     doc = Nokogiri::HTML(open(full_subimgur_url))
     results = doc.css(".post .image-list-link img")
+    return if results.blank?
 
     ind = Random.new.rand(results.length)
 

@@ -20,6 +20,7 @@ module MessageManager
         case command_match[1]
         when "imgur"
           args_match = args.match(/^(add|remove|list) ?(\w*) ?(\w*)/)
+          return if args_match.nil?
           imgur_command = args_match[1]
           if imgur_command == "list"
             say_to_chan Command::execute_command(:imgur_list)
@@ -40,7 +41,7 @@ module MessageManager
           quit
         when "xkcd"
           if args.blank?
-            say_to_chan Command::execute_command :xkcd, args
+            say_to_chan Command::execute_command :xkcd
           else
             say_to_chan Command::execute_command :xkcd_search, args
           end

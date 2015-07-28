@@ -53,7 +53,6 @@ module Command
       if (imgur_command = ImgurCommand.where(command: args).first).nil?
         return "Command !#{args} doesn't exist"
       end
-      binding.pry
       imgur_command.destroy
       "Removed command !#{args}"
     end
@@ -109,7 +108,7 @@ module Command
       end
     end
 
-    def self.xkcd args
+    def self.xkcd
       XkcdManager::random_image
     end
 

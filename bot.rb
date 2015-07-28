@@ -21,6 +21,7 @@ class Bot
   end
 
   def say_to_chan(msg)
+    return if msg.nil?
     msg.split("\r\n").each do |m|
       say "PRIVMSG ##{@channel} :#{m}"
     end
