@@ -1,7 +1,6 @@
 require_relative '../command'
 
 module MessageManager
-  include Command
 
   def parse_message msg
     if msg.match(/^PING :(.*)$/)
@@ -14,39 +13,39 @@ module MessageManager
         author = User.create(name: author_name)
       end
 
-      check_pending_messages author.id
+      say_to_chan Command::check_pending_messages author.id
 
       if command_match = content.match(/^!(\w*)[\ |\/]?(.*)/)
         args = command_match[2]
         case command_match[1]
-        when "booty"
-          execute_command :booty, args
-        when "pussy"
-          execute_command :pussy, args
-        when "bpt"
-          execute_command :black_people_twitter, args
-        when "futanari"
-          execute_command :futanari, args
-        when "gaybro"
-          execute_command :gaybro, args
-        when "ladyboy"
-          execute_command :lady_boys, args
+        when "imgur"
+          args_match = args.match(/^(add|remove|list) ?(\w*) ?(\w*)/)
+          imgur_command = args_match[1]
+          if imgur_command == "list"
+            say_to_chan Command::execute_command(:imgur_list)
+          else
+            command_name = args_match[2]
+            if imgur_command == "add"
+              subimgur = args_match[3]
+              say_to_chan Command::execute_command(:imgur_add,"#{command_name} #{subimgur}")
+            elsif imgur_command == "remove"
+              say_to_chan Command::execute_command(:imgur_remove, command_name)
+            end
+          end
         when "s"
-          execute_command :sed, "#{author.id}/#{args}"
-        when "seen"
-          execute_command :seen, args
+          say_to_chan Command::execute_command :sed, "#{author.id}/#{args}"
         when "tell"
-          execute_command :tell, "#{author.id} #{args}"
+          say_to_chan Command::execute_command :tell, "#{author.id} #{args}"
         when "goaway"
           quit
         when "xkcd"
           if args.blank?
-            execute_command :xkcd, args
+            say_to_chan Command::execute_command :xkcd, args
           else
-            execute_command :xkcd_search, args
+            say_to_chan Command::execute_command :xkcd_search, args
           end
         else
-          say_to_chan "#{command_match[1]} hasn't been implemented yet"
+          say_to_chan Command::execute_command command_match[1].to_sym, args
         end
       end
       Message.create(user: author, text: content, message_type: 'message')
@@ -57,7 +56,7 @@ module MessageManager
         author = User.create(name: author_name)
       end
 
-      check_pending_messages author.id if action == 'JOIN'
+      say_to_chan Command::check_pending_messages author.id if action == 'JOIN'
 
       activity = $~[2].downcase
       message = Message.new(user: author, text: content, message_type: activity)

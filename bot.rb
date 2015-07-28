@@ -4,7 +4,6 @@ require_relative 'environment'
 require_relative 'lib/mixins/message_manager'
 
 class Bot
-  include ActionView::Helpers::DateHelper
   include MessageManager
 
   def initialize(server, port, channel, nick)
@@ -22,7 +21,9 @@ class Bot
   end
 
   def say_to_chan(msg)
-    say "PRIVMSG ##{@channel} :#{msg}"
+    msg.split("\r\n").each do |m|
+      say "PRIVMSG ##{@channel} :#{m}"
+    end
   end
 
   def run
