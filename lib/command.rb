@@ -33,6 +33,18 @@ module Command
       say_to_chan Imgur::black_people_twitter
     end
 
+    def futanari args
+      say_to_chan Imgur::futanari
+    end
+
+    def gaybro args
+      say_to_chan Imgur::gaybro
+    end
+
+    def lady_boys args
+      say_to_chan Imgur::lady_boys
+    end
+
     def sed args
       author_id, search, replace = args.split '/'
       return if !(author_id && search && replace)

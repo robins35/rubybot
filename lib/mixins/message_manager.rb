@@ -25,6 +25,12 @@ module MessageManager
           execute_command :pussy, args
         when "bpt"
           execute_command :black_people_twitter, args
+        when "futanari"
+          execute_command :futanari, args
+        when "gaybro"
+          execute_command :gaybro, args
+        when "ladyboy"
+          execute_command :lady_boys, args
         when "s"
           execute_command :sed, "#{author.id}/#{args}"
         when "seen"

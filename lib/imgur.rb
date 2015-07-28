@@ -15,6 +15,18 @@ module Imgur
     get_random_from_subimgur 'blackpeopletwitter'
   end
 
+  def self.futanari
+    get_random_from_subimgur 'futanari'
+  end
+
+  def self.gaybro
+    get_random_from_subimgur 'GaybrosGoneWild'
+  end
+
+  def self.lady_boys
+    get_random_from_subimgur 'ladyboys'
+  end
+
   def self.get_random_from_subimgur subimgur
     doc = Nokogiri::HTML(open("http://www.imgur.com/r/#{subimgur}"))
     results = doc.css(".post .image-list-link img")
