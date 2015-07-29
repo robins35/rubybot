@@ -14,12 +14,13 @@ module MessageManager
       end
 
       say_to_chan Command::check_pending_messages author.id
+      say_to_chan Command::summarize_any_urls content
 
       if command_match = content.match(/^!(\w*)[\ |\/]?(.*)/)
         args = command_match[2]
         case command_match[1]
         when "imgur"
-          args_match = args.match(/^(add|remove|list) ?(\w*) ?(\w*)/)
+          args_match = args.match(/^(add|remove|list|clear) ?(\w*) ?(\w*)/)
           return if args_match.nil?
           imgur_command = args_match[1]
           if imgur_command == "list"
@@ -31,6 +32,8 @@ module MessageManager
               say_to_chan Command::execute_command(:imgur_add,"#{command_name} #{subimgur}")
             elsif imgur_command == "remove"
               say_to_chan Command::execute_command(:imgur_remove, command_name)
+            elsif imgur_command == "clear"
+              say_to_chan Command::execute_command(:imgur_clear)
             end
           end
         when "s"

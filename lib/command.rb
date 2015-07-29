@@ -9,7 +9,7 @@ module Command
     if args.present?
       self.send(command, args)
     else
-      self.send command
+      self.send command rescue ""
     end
   end
 
@@ -24,6 +24,18 @@ module Command
       pm.destroy
     end
     chan_output
+  end
+
+  def self.summarize_any_urls content
+    if content =~ /https?:\/\/[\S]+/
+      begin
+        doc = Nokogiri::HTML(open($~[0]))
+      rescue
+        return("Couldn't open that url")
+      end
+      result = doc.css("title").first
+      result.text if result.present?
+    end
   end
 
   def self.method_missing method_sym, *arguments, &block
@@ -58,9 +70,19 @@ module Command
     end
 
     def self.imgur_list
-      ImgurCommand.all.map do |imgur_command|
-        "!#{imgur_command.command} - returns random from #{imgur_command.full_subimgur_url}"
-      end.join("\r\n")
+      imgur_commands = ImgurCommand.all
+      if imgur_commands.present?
+        ImgurCommand.all.order(:command).map do |imgur_command|
+          "!#{imgur_command.command} - returns random from #{imgur_command.full_subimgur_url}"
+        end.join("\r\n")
+      else
+        "There are currently no imgur commands"
+      end
+    end
+
+    def self.imgur_clear
+      ImgurCommand.destroy_all
+      "Deleted all imgur commands"
     end
 
     def self.sed args
@@ -114,5 +136,17 @@ module Command
 
     def self.xkcd_search args
       XkcdManager::search_image args
+    end
+
+    def self.yt args
+      query_string = { search_query: args }.to_query
+      full_url = "https://www.youtube.com/results?#{query_string}"
+      doc = Nokogiri::HTML(open(full_url))
+      results = doc.css(".yt-lockup-title > a")
+      if results.present?
+        "https://www.youtube.com#{results.first.attributes["href"].value}"
+      else
+        "There are no results for #{args}"
+      end
     end
 end
