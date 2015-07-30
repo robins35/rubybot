@@ -6,11 +6,7 @@ module Command
   extend ActionView::Helpers::DateHelper
 
   def self.execute_command command, args = ""
-    if args.present?
-      self.send(command, args)
-    else
-      self.send command rescue ""
-    end
+    self.send(command, args)
   end
 
   def self.check_pending_messages recipient_id
@@ -34,7 +30,7 @@ module Command
         return("Couldn't open that url")
       end
       result = doc.css("title").first
-      result.text if result.present?
+      result.text.strip if result.present?
     end
   end
 
@@ -47,6 +43,25 @@ module Command
   end
 
   private
+
+    def self.command command_name
+      output_string = ""
+      commands = YAML.load_file('config/commands.yml')["commands"]
+      command = commands.select { |c| c["name"] == "!#{command_name}" }.first
+      return "Command #{command_name} doesn't exist" if command.blank?
+      output_string << "*Command:* #{command["name"]}\r\n"
+      output_string << "*Description:* #{command["description"]}\r\n"
+      output_string << "*Example:* #{command["example"]}\r\n\r\n"
+    end
+
+    def self.help _
+      output_string = ""
+      commands = YAML.load_file('config/commands.yml')["commands"]
+      commands.each do |c|
+        output_string << "#{c["name"]}#{c["args"].to_s}\r\n"
+      end
+      output_string
+    end
 
     def self.imgur_add args
       return "Wrong format" if args.blank?
@@ -69,7 +84,7 @@ module Command
       "Removed command !#{args}"
     end
 
-    def self.imgur_list
+    def self.imgur_list _
       imgur_commands = ImgurCommand.all
       if imgur_commands.present?
         ImgurCommand.all.order(:command).map do |imgur_command|
@@ -80,7 +95,7 @@ module Command
       end
     end
 
-    def self.imgur_clear
+    def self.imgur_clear _
       ImgurCommand.destroy_all
       "Deleted all imgur commands"
     end

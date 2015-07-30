@@ -1,0 +1,62 @@
+commands:
+  -
+    name: "!command"
+    args: " command_name"
+    description: "Gives a detailed explanation, including example, of the !command_name. For imgur commands you will have to add the type of imgur command, for example: !command imgur add"
+    example: "!command seen"
+  -
+    name: "!help"
+    description: "Displays the help menu you are reading right now"
+    example: "!help "
+  -
+    name: "!imgur add"
+    args: " command_name [gallery_name]"
+    description: "Adds the command !command_name. The gallery defaults to the
+      command name if you don't specify it"
+    example: "!imgur add tripping kitty cats"
+  -
+    name: "!imgur remove"
+    args: " command_name"
+    description: "Removes the command !command_name if it exists
+    example: !imgur remove kitty"
+  -
+    name: "!imgur list"
+    description: "Lists all the existing commands added for imgur 
+    example: !imgur list"
+  -
+    name: "!imgur clear"
+    description: "Removes all the existing imgur commands
+    example: !imgur clear"
+  -
+    name: "!s"
+    args: "/search/replace"
+    description: "Posts a revision of the last comment, using search and replace.
+      The last comment is searched for the search text, and replaced with the
+      replace text"
+    example: "!s/cat/kitty"
+  -
+    name: "!seen"
+    args: " user_name"
+    description: "Tells you the last time the bot saw a user and what they were
+      doing"
+    example: "!seen jeezy"
+  -
+    name: "!tell"
+    args: " user_name message"
+    description: "The next time the user with user_name is seen by the bot, it
+      will relay your message to them"
+    example: "!tell jeezy When you see this I need you to help me configure my new
+      NetBSD machine, k thanks"
+  -
+    name: "!xkcd"
+    args: " [query_string]"
+    description: "If the command is issued without a query_string, then it will
+      return a random xkcd comic. If a query_string is passed, it will search for
+      that comic and return it"
+    example: "!xkcd balmer"
+  -
+    name: "!yt"
+    args: " query_string"
+    description: "Essentially 'I\'m feeling lucky' for youtube. Will search youtube
+      for your query_string, and return the highest result"
+    example: "!yt One day UGK"
