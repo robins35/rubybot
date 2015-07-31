@@ -13,7 +13,7 @@ commands:
     args: " command_name [gallery_name]"
     description: "Adds the command !command_name. The gallery defaults to the
       command name if you don't specify it"
-    example: "!imgur add tripping kitty cats"
+    example: "!imgur add kitty cats"
   -
     name: "!imgur remove"
     args: " command_name"

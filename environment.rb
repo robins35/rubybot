@@ -8,6 +8,7 @@ require 'pry'
 require 'yaml'
 require 'rake'
 require 'socket'
+require 'therubyracer'
 require 'uri'
 
 app = Rake.application

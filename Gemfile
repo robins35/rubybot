@@ -7,6 +7,7 @@ gem 'activesupport'
 gem 'actionview'
 
 gem 'awesome_print'
+gem 'therubyracer'
 gem 'nokogiri'
 
 gem 'rake'

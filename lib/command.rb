@@ -100,6 +100,15 @@ module Command
       "Deleted all imgur commands"
     end
 
+    def self.js args
+      cxt = V8::Context.new
+      begin
+        (cxt.eval(args)).to_s
+      rescue Exception => e
+        e.to_s
+      end
+    end
+
     def self.sed args
       author_id, search, replace = args.split '/'
       return if !(author_id && search && replace)
