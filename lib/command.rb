@@ -154,7 +154,7 @@ module Command
       end
     end
 
-    def self.xkcd
+    def self.xkcd _
       XkcdManager::random_image
     end
 

@@ -13,6 +13,7 @@ class Bot
     say "USER #{nick.downcase} 0 * #{nick.downcase}"
     say "PRIVMSG NICKSERV :identify qwerty\n"
     say "JOIN #{@channel}"
+    say "PRIVMSG CHANSERV :op #{@channel} #{nick}"
     say_to_chan "PAPPA DOC"
   end
 
@@ -43,8 +44,11 @@ class Bot
   end
 end
 
-chan = gets("Channel name > ")
-nick = gets("Nick > ")
+print "Channel name: "
+chan = gets.chomp
+print "Nick: "
+nick = gets.chomp
+
 bot = Bot.new("irc.freenode.net", 6667, chan, nick)
 
 trap("INT"){ bot.quit }
