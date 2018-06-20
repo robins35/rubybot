@@ -11,7 +11,8 @@ class Bot
     @socket = TCPSocket.open(server, port)
     say "NICK #{nick}"
     say "USER #{nick.downcase} 0 * #{nick.downcase}"
-    say "JOIN ##{@channel}"
+    say "PRIVMSG NICKSERV :identify qwerty\n"
+    say "JOIN #{@channel}"
     say_to_chan "PAPPA DOC"
   end
 
@@ -23,7 +24,7 @@ class Bot
   def say_to_chan(msg)
     return if msg.nil?
     msg.split("\r\n").each do |m|
-      say "PRIVMSG ##{@channel} :#{m}"
+      say "PRIVMSG #{@channel} :#{m}"
     end
   end
 
@@ -37,12 +38,14 @@ class Bot
   end
 
   def quit
-    say "PART ##{@channel} :BYE, BYE Y'ALL"
+    say "PART #{@channel} :BYE, BYE Y'ALL"
     say 'QUIT'
   end
 end
 
-bot = Bot.new("irc.freenode.net", 6667, 'ppdloc', 'anus_bot')
+chan = gets("Channel name > ")
+nick = gets("Nick > ")
+bot = Bot.new("irc.freenode.net", 6667, chan, nick)
 
 trap("INT"){ bot.quit }
 

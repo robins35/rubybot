@@ -1,7 +1,7 @@
 # 1437862233_create_messages.rb
 require_relative '../../environment'
 
-class CreateMessages < ActiveRecord::Migration
+class CreateMessages < ActiveRecord::Migration[5.0]
 
   def change
     create_table :messages do |t|

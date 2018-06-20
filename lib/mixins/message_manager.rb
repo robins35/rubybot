@@ -1,11 +1,12 @@
 require_relative '../command'
+require 'pry'
 
 module MessageManager
 
   def parse_message msg
     if msg.match(/^PING :(.*)$/)
       say "PONG #{$~[1]}"
-    elsif msg.match(/^:(\w*)!.*PRIVMSG ##{@channel} :(.*)$/)
+    elsif msg.match(/^:(\w*)!.*PRIVMSG #{@channel} :(.*)$/)
       author_name = $~[1].downcase
       content = $~[2].strip
 
@@ -17,6 +18,7 @@ module MessageManager
       say_to_chan Command::summarize_any_urls content
 
       if command_match = content.match(/^!(\w*)[\ |\/]?(.*)/)
+
         args = command_match[2]
         case command_match[1]
         when "imgur"
@@ -53,7 +55,7 @@ module MessageManager
         end
       end
       Message.create(user: author, text: content, message_type: 'message')
-    elsif activity_match = msg.match(/^:(\w*)!.*(JOIN|QUIT|PART) [##{@channel}|:Client Quit]/)
+    elsif activity_match = msg.match(/^:(\w*)!.*(JOIN|QUIT|PART) [#{@channel}|:Client Quit]/)
       author_name = $~[1].downcase
       action = $~[2]
       if (author = User.where(name: author_name).first).blank?

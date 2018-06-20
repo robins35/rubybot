@@ -1,7 +1,7 @@
 # 1437947883_create_pending_messages.rb
 require_relative '../../environment'
 
-class CreatePendingMessages < ActiveRecord::Migration
+class CreatePendingMessages < ActiveRecord::Migration[5.0]
 
   def change
     create_table :pending_messages do |t|

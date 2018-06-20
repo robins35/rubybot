@@ -52,7 +52,8 @@ namespace :db do
   task :migrate => :configure_connection do
     ActiveRecord::Migration.verbose = true
     begin
-      ActiveRecord::Migrator.migrate MIGRATIONS_DIR, ENV['VERSION'] ? ENV['VERSION'].to_i : nil
+      migrator = ActiveRecord::MigrationContext.new MIGRATIONS_DIR
+      migrator.migrate ENV['VERSION'] ? ENV['VERSION'].to_i : nil
     rescue Exception => e
       puts e
     end
